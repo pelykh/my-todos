@@ -5,7 +5,7 @@ from models import Task
 from repositories.base import BaseRepository
 
 
-class TaskRepository(BaseRepository):
+class TaskRepository(BaseRepository["Task"]):
     def upsert(self, data: dict) -> Task:
         task = self.db.query(Task).filter(Task.id == data["id"]).first()
         if task is None:

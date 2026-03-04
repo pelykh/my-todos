@@ -6,7 +6,7 @@ def test_register_success(client):
 
 def test_register_duplicate_email(client):
     client.post("/auth/register", json={"email": "a@b.com", "password": "secret123"})
-    resp = client.post("/auth/register", json={"email": "a@b.com", "password": "other"})
+    resp = client.post("/auth/register", json={"email": "a@b.com", "password": "other123"})
     assert resp.status_code == 409
 
 

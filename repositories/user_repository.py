@@ -4,7 +4,7 @@ from models import User
 from repositories.base import BaseRepository
 
 
-class UserRepository(BaseRepository):
+class UserRepository(BaseRepository["User"]):
     def create(self, email: str, password_hash: str) -> User:
         user = User(email=email, password_hash=password_hash)
         self.db.add(user)

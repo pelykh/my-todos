@@ -47,7 +47,7 @@ def update_task(
 ):
     task = _get_task_or_404(task_id, current_user, db)
     svc = TaskService(TaskRepository(db))
-    return svc.update(task, body.model_dump(exclude_none=True))
+    return svc.update(task, body.model_dump(exclude_unset=True))
 
 
 @router.delete("/{task_id}", response_model=TaskSchema)

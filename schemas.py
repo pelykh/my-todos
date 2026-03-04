@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
+from typing import Annotated
 
 
 # --- Auth ---
 
 class RegisterRequest(BaseModel):
     email: EmailStr
-    password: str
+    password: Annotated[str, Field(min_length=8)]
 
 
 class LoginRequest(BaseModel):

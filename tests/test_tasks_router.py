@@ -53,12 +53,12 @@ def test_delete_task(auth_client):
 
 
 def test_tasks_are_user_scoped(client):
-    client.post("/auth/register", json={"email": "a@b.com", "password": "pass1"})
-    r1 = client.post("/auth/login", json={"email": "a@b.com", "password": "pass1"})
+    client.post("/auth/register", json={"email": "a@b.com", "password": "pass1word"})
+    r1 = client.post("/auth/login", json={"email": "a@b.com", "password": "pass1word"})
     token1 = r1.json()["access_token"]
 
-    client.post("/auth/register", json={"email": "b@b.com", "password": "pass2"})
-    r2 = client.post("/auth/login", json={"email": "b@b.com", "password": "pass2"})
+    client.post("/auth/register", json={"email": "b@b.com", "password": "pass2word"})
+    r2 = client.post("/auth/login", json={"email": "b@b.com", "password": "pass2word"})
     token2 = r2.json()["access_token"]
 
     client.post("/tasks", json=_task(id="t1"), headers={"Authorization": f"Bearer {token1}"})
