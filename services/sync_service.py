@@ -35,10 +35,12 @@ class SyncService:
 
     def push(self, user_id: str, changes: list[dict]) -> int:
         """Store all changes, assigning monotonic server_version. Returns final version."""
-        for change in changes:
-            current_max = self._repo.max_version(user_id)
-            self._repo.upsert({**change, "user_id": user_id, "server_version": current_max + 1})
-        return self._repo.max_version(user_id)
+        if not changes:
+            return self._repo.max_version(user_id)
+        start_version = self._repo.max_version(user_id)
+        for i, change in enumerate(changes, start=1):
+            self._repo.upsert({**change, "user_id": user_id, "server_version": start_version + i})
+        return start_version + len(changes)
 
     def pull(self, user_id: str, since: int) -> list:
         return self._repo.get_since(user_id, since)
