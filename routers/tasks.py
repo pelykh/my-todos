@@ -46,9 +46,9 @@ def create_task(
 ):
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     data = body.model_dump()
-    data.setdefault("id", _generate_id())
-    data.setdefault("created_at", now)
-    data.setdefault("updated_at", now)
+    data["id"] = data["id"] or _generate_id()
+    data["created_at"] = data["created_at"] or now
+    data["updated_at"] = data["updated_at"] or now
     svc = TaskService(TaskRepository(db))
     return svc.create(user_id=current_user.id, data=data)
 
