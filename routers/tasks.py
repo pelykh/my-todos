@@ -1,3 +1,8 @@
+import random
+import string
+import time
+from datetime import datetime, timezone
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -5,8 +10,13 @@ from database import get_db
 from models import User
 from repositories.task_repository import TaskRepository
 from routers.deps import get_current_user
-from schemas import TaskPatchRequest, TaskSchema
+from schemas import CreateTaskBody, TaskPatchRequest, TaskSchema
 from services.task_service import TaskService
+
+
+def _generate_id() -> str:
+    rand = "".join(random.choices(string.digits + string.ascii_lowercase, k=7))
+    return f"{int(time.time() * 1000)}-{rand}"
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
@@ -30,12 +40,17 @@ def get_task(task_id: str, db: Session = Depends(get_db), current_user: User = D
 
 @router.post("", response_model=TaskSchema, status_code=status.HTTP_201_CREATED)
 def create_task(
-    body: TaskSchema,
+    body: CreateTaskBody,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    data = body.model_dump()
+    data.setdefault("id", _generate_id())
+    data.setdefault("created_at", now)
+    data.setdefault("updated_at", now)
     svc = TaskService(TaskRepository(db))
-    return svc.create(user_id=current_user.id, data=body.model_dump())
+    return svc.create(user_id=current_user.id, data=data)
 
 
 @router.patch("/{task_id}", response_model=TaskSchema)

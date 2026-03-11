@@ -23,6 +23,24 @@ class TokenResponse(BaseModel):
 
 # --- Task ---
 
+class CreateTaskBody(BaseModel):
+    id: str | None = None
+    title: str
+    notes: str | None = None
+    status: str = "inbox"
+    context: str | None = None
+    area: str | None = None
+    project_id: str | None = None
+    is_project: bool = False
+    scheduled_date: str | None = None
+    due_date: str | None = None
+    estimated_minutes: int | None = None
+    waiting_since: str | None = None
+    created_at: str | None = None
+    updated_at: str | None = None
+    completed_at: str | None = None
+
+
 class TaskSchema(BaseModel):
     id: str
     title: str
