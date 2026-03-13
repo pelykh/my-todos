@@ -1,0 +1,31 @@
+meta {
+  name: Push Changes
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/sync
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "changes": [
+      {
+        "id": "1741651200000-abc123d",
+        "title": "Buy milk",
+        "status": "inbox",
+        "tags": [],
+        "created_at": "2026-01-01T00:00:00Z",
+        "updated_at": "2026-01-01T00:00:00Z"
+      }
+    ]
+  }
+}

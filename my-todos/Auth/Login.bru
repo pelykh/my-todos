@@ -1,0 +1,29 @@
+meta {
+  name: Login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "andrew.pelykh@gmail.com",
+    "password": "12345678"
+  }
+}
+
+tests {
+  var json = res.getBody();
+  if (json.access_token) {
+    bru.setVar('token', json.access_token);
+  }
+}

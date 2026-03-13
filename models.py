@@ -41,6 +41,7 @@ class Task(Base):
     created_at: Mapped[str] = mapped_column(String, nullable=False)
     updated_at: Mapped[str] = mapped_column(String, nullable=False)
     completed_at: Mapped[str | None] = mapped_column(String, nullable=True)
+    tags: Mapped[str] = mapped_column(String, nullable=False, default="")
     server_version: Mapped[int] = mapped_column(Integer, nullable=False, default=0, index=True)
 
     user: Mapped["User"] = relationship("User", back_populates="tasks")

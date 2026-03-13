@@ -1,0 +1,24 @@
+meta {
+  name: Create Task
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/tasks
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "title": "Buy milk",
+    "status": "inbox",
+    "tags": ["shopping"]
+  }
+}

@@ -1,0 +1,24 @@
+meta {
+  name: Update Task
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/tasks/:id
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "title": "Updated title",
+    "status": "next",
+    "tags": ["work", "urgent"]
+  }
+}

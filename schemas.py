@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Annotated
 
 
@@ -39,6 +39,7 @@ class CreateTaskBody(BaseModel):
     created_at: str | None = None
     updated_at: str | None = None
     completed_at: str | None = None
+    tags: list[str] = []
 
 
 class TaskSchema(BaseModel):
@@ -57,6 +58,14 @@ class TaskSchema(BaseModel):
     created_at: str
     updated_at: str
     completed_at: str | None = None
+    tags: list[str] = []
+
+    @field_validator("tags", mode="before")
+    @classmethod
+    def parse_tags(cls, v):
+        if isinstance(v, str):
+            return v.split() if v else []
+        return v or []
 
     model_config = {"from_attributes": True}
 
@@ -75,6 +84,7 @@ class TaskPatchRequest(BaseModel):
     waiting_since: str | None = None
     updated_at: str | None = None
     completed_at: str | None = None
+    tags: list[str] | None = None
 
 
 # --- Sync ---

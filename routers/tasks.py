@@ -49,6 +49,7 @@ def create_task(
     data["id"] = data["id"] or _generate_id()
     data["created_at"] = data["created_at"] or now
     data["updated_at"] = data["updated_at"] or now
+    data["tags"] = " ".join(sorted(data.get("tags") or []))
     svc = TaskService(TaskRepository(db))
     return svc.create(user_id=current_user.id, data=data)
 
@@ -61,8 +62,11 @@ def update_task(
     current_user: User = Depends(get_current_user),
 ):
     task = _get_task_or_404(task_id, current_user, db)
+    data = body.model_dump(exclude_unset=True)
+    if "tags" in data:
+        data["tags"] = " ".join(sorted(data["tags"] or []))
     svc = TaskService(TaskRepository(db))
-    return svc.update(task, body.model_dump(exclude_unset=True))
+    return svc.update(task, data)
 
 
 @router.delete("/{task_id}", response_model=TaskSchema)
