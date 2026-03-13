@@ -39,6 +39,8 @@ class SyncService:
             return self._repo.max_version(user_id)
         start_version = self._repo.max_version(user_id)
         for i, change in enumerate(changes, start=1):
+            if isinstance(change.get("tags"), list):
+                change = {**change, "tags": " ".join(sorted(change["tags"]))}
             self._repo.upsert({**change, "user_id": user_id, "server_version": start_version + i})
         return start_version + len(changes)
 
