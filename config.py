@@ -7,7 +7,7 @@ class Settings(BaseSettings):
 
     database_url: str = "sqlite:///./todos.db"
     jwt_secret: str
-    jwt_expire_days: int = 30
+    jwt_expire_days: int = 90
 
 
 @lru_cache
